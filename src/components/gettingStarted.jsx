@@ -1,25 +1,25 @@
 import DisplayList from "./listTodo.jsx";
 import {useEffect, useRef, useState} from "react";
 
+
 const GettingStarted = () => {
     const [todo, setTodo] = useState(() => {
-        // Charger les todos depuis le localStorage lors de l'initialisation
-        return  JSON.parse(window.localStorage.getItem("todos")) || [];
-
+        const storedTodos = JSON.parse(window.localStorage.getItem("todos"));
+        return storedTodos || [];
     });
-
     const inputRef = useRef();
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const inputElement = inputRef.current;
-        setTodo([...todo, {text:inputElement, completed: false}]);
-        inputElement.value = "";
+        const addTodo = inputRef.current;
+        setTodo([...todo, {text:addTodo.value, completed:false}]);
+        addTodo.value = "";
     }
 
-
     useEffect(() => {
-        window.localStorage.setItem("todos", JSON.stringify(todo));
-    }, [todo]);
+        window.localStorage.setItem("todos", JSON.stringify(todo))
+    }, [todo])
+
 
     return(
       <>
@@ -31,7 +31,7 @@ const GettingStarted = () => {
               </form>
           </section>
           <section className={"flex flex-col mx-auto w-3/4"}>
-              <DisplayList todo={todo}/>
+              <DisplayList todos={todo} setTodos={setTodo}/>
           </section>
       </>
   )

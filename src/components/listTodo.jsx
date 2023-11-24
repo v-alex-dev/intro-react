@@ -1,33 +1,45 @@
 import PropTypes from "prop-types";
-import {useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 
-const DisplayList = (props) => {
+const DisplayList = ({todos, setTodos}) => {
 
-    const inputRef = useRef();
-    const divRef = useRef();
-    const handleToggle = () => {
-      console.log(divRef.current)
+    const inputCheckRef = useRef();
+    const inputDelRef = useRef();
+
+    const handleChecked = (id) =>{
+        const newTodos = [...todos]; // Create a shallow copy of todos
+        newTodos[id].completed = !newTodos[id].completed;
+        setTodos(newTodos);
     }
-    const handleDelete = (e) => {
-        e.preventDefault();
+
+    const handleDel = (event) =>{
+        event.preventDefault();
+        const newTodos = todos.filter((value) => !value.completed);
+        setTodos(newTodos);
 
     }
 
     return (
         <>
             <form>
-                <h2>Todos</h2>
-                {props.todo.map((value, index) => (
-                    <div className={"mx-auto flex flex-col justify-center md:mx-0"} ref={divRef} key={index}>
-                        <div  className={"flex mt-4 md:mx-0 "}>
-                            <input ref={inputRef} type={"checkbox"} className={"w-5 mr-4"} onClick={handleToggle} key={index}/>
+                <h2 className={"font-bold text-3xl"}>Todos</h2>
+                {todos.map((value, index) => (
+                    <div className={"mx-auto flex flex-col justify-center md:mx-0"} key={index}>
+                        <div className={"flex mt-4 md:mx-0 "}>
+                            <input
+                                ref={inputCheckRef}
+                                onClick={() =>handleChecked(index)}
+                                checked={!!value.completed}
+                                type={"checkbox"}
+                                className={"w-5 mr-4"}/>
                             <p>{value.text}</p>
                         </div>
                     </div>
                 ))}
-                <input className={"bg-blue-500 py-1 px-8 rounded font-bold text-amber-50 mt-10"} onClick={handleDelete}  type={"submit"} value={"Delete"}/>
+                <input className={"px-4 mt-4 font-bold rounded bg-blue-500 text-amber-50"}
+                       type={"submit"}
+                       onClick={handleDel} value={"Delete"}/>
             </form>
-
         </>
 
     )
@@ -35,6 +47,7 @@ const DisplayList = (props) => {
 
 }
 DisplayList.propTypes = {
-    todo: PropTypes.array.isRequired,
+    todos: PropTypes.array.isRequired,
 };
+
 export default DisplayList;
