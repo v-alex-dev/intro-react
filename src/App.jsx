@@ -5,6 +5,7 @@ import Footer from "./layouts/footer.jsx";
 import GettingStarted from "./components/gettingStarted.jsx";
 import Error404 from "./errors/404.jsx";
 import Home from "./components/home.jsx";
+import ReactCalendar from "./components/calendar.jsx";
 
 function App() {
     const router = createBrowserRouter([
@@ -25,6 +26,10 @@ function App() {
                 {
                     path: 'gettingStarted',
                     element: <GettingStarted/>
+                },
+                {
+                    path:'calendar',
+                    element: <ReactCalendar/>
                 }
             ]
         }
